@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-//const String kApiurl="http://183.81.52.104:5724/api/";
+
 const String kApiurl="http://humanapi.ddns.net:5728/api/";
 const String urlImage="http://humanapi.ddns.net:5728/Userimage/";
 
@@ -9,8 +9,7 @@ const String urlImage="http://humanapi.ddns.net:5728/Userimage/";
 //const String kApiurl="http://hrmvn.mds-intl.com:5725/api/";
 //const String urlImage="http://hrmvn.mds-intl.com:5725/Userimage/";
 
-//const String kApiurl="http://192.168.56.200:5725/api/";
-//const String urlImage="http://192.168.56.200:5725/Userimage/";
+
 
 const kHintTextStyle = TextStyle(
   color: Colors.white54,
