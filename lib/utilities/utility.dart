@@ -1,6 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:geolocator/geolocator.dart';
+//import 'package:geolocator/geolocator.dart';
 import 'package:intl/intl.dart';
 import 'package:quiver/time.dart';
 import 'package:encrypt/encrypt.dart' as MH;
@@ -113,7 +113,7 @@ class Utility{
   }
 
 
-  static Future<Position> determinePosition() async {
+ /* static Future<Position> determinePosition() async {
     bool serviceEnabled;
     LocationPermission permission;
 
@@ -148,7 +148,7 @@ class Utility{
     // When we reach here, permissions are granted and we can
     // continue accessing the position of the device.
     return await Geolocator.getCurrentPosition();
-  }
+  }*/
 
   static String encryptString(String data)
   {

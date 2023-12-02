@@ -291,6 +291,7 @@ class _InfomationState extends State<Infomation>
   }
   late File _storedImage;
   // ================================= Image from camera
+/*
   Future getCameraImage() async {
 
     PickedFile? image=await _picker.getImage(source: ImageSource.camera);
@@ -334,6 +335,7 @@ class _InfomationState extends State<Infomation>
     });
   }
 
+*/
 
   List<TableRow> createRow()
   {

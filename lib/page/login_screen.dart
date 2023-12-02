@@ -3,7 +3,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_native_timezone/flutter_native_timezone.dart';
-import 'package:geolocator/geolocator.dart';
+//import 'package:geolocator/geolocator.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:humanweb/api/apiservice.dart';
 import 'package:humanweb/components/filb01a.dart';
@@ -27,7 +27,7 @@ import 'package:humanweb/utilities/utility.dart';
 import '../main.dart';
 import 'package:timezone/timezone.dart' as tz;
 import 'package:timezone/data/latest.dart' as tz;
-import 'package:device_info_plus/device_info_plus.dart';
+//import 'package:device_info_plus/device_info_plus.dart';
 import '../state/filc04aacontroller.dart';
 import 'dart:html' as html;
 import 'myhomepage.dart';
@@ -44,8 +44,8 @@ class _LoginScreenState extends State<LoginScreen> {
 
  // bool _rememberMe = false;
   bool _isLoading = false;
-  final TextEditingController emailController = TextEditingController();
-  final TextEditingController passwordController =  TextEditingController();
+  final TextEditingController emailController = TextEditingController(text: '');
+  final TextEditingController passwordController =  TextEditingController(text: '');
    String? _email='';
    String? _pass='';
 
@@ -488,7 +488,7 @@ class _LoginScreenState extends State<LoginScreen> {
   @override
   Widget build(BuildContext context) {
 
-    DeviceInfoPlugin deviceInfo = DeviceInfoPlugin();
+    //DeviceInfoPlugin deviceInfo = DeviceInfoPlugin();
     // late TargetPlatform platform;
 
     final  TargetPlatform platform = Theme.of(context).platform;

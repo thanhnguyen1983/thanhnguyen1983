@@ -33,6 +33,7 @@ import 'dart:io';
 
 import '../components/SYS_GROUP.dart';
 import '../components/SYS_USER.dart';
+import '../components/classapprovalcacation.dart';
 import '../components/filc04aa.dart';
 import '../components/fild02a.dart';
 import '../components/fild03a.dart';
@@ -805,6 +806,18 @@ static Future<List<FILB01AC>> getFILB01AC(int yyyy)async
       throw('Error');
     }
   }
+
+  static Future<List<String>> approvalvacationlist(List<ClassApproval> list)async
+  {
+    List<String> messlist=[];
+    for(int i=0;i<list.length;i++)
+      {
+        messlist.add(await approvalvacation(list[i].SEQ_NO,list[i].STY,list[i].APV_FG,list[i].DIS_FG,list[i].EMP_ID));
+      }
+
+    return messlist;
+  }
+
 
   static Future<String> approvalvacation(String SEQ_NO,int STY,int APV_FG,int DIS_FG,String EMP_ID)async
   {

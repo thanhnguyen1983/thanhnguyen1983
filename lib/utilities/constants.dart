@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 
-const String kApiurl="http://humanapi.ddns.net:5728/api/";
-const String urlImage="http://humanapi.ddns.net:5728/Userimage/";
+//const String kApiurl="http://humanapi.ddns.net:5728/api/";
+//const String urlImage="http://humanapi.ddns.net:5728/Userimage/";
 
 //const String kApiurl="http://kingtechuman.ddns.net:5725/api/";
 //const String urlImage="http://kingtechuman.ddns.net:5725/Userimage/";
 
-//const String kApiurl="http://hrmvn.mds-intl.com:5725/api/";
-//const String urlImage="http://hrmvn.mds-intl.com:5725/Userimage/";
+const String kApiurl="http://hrmvn.mds-intl.com:5725/api/";
+const String urlImage="http://hrmvn.mds-intl.com:5725/Userimage/";
 
 
 

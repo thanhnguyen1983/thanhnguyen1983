@@ -6,7 +6,7 @@ import 'package:flutter/services.dart';
 import 'package:humanweb/state/fild02acontroller.dart';
 import 'package:mat_month_picker_dialog/mat_month_picker_dialog.dart';
 import 'package:xml/xml.dart' as xml;
-import 'package:flutter_html/flutter_html.dart';
+//import 'package:flutter_html/flutter_html.dart';
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -100,6 +100,8 @@ class _ViewAttendanceMonthNewState extends State<ViewAttendanceMonthNew>
     list.add(createRow2(screenWidth,'TĂNG CA NGÀY 正常加班(GIỜ小時)',Utility.numbertoStringFormat((filc06aaController.getitem().OTT_HR!), "#,###.#")));
     list.add(createRow2(screenWidth,'CA ĐÊM 正常夜班(GIỜ小時）',Utility.numbertoStringFormat((filc06aaController.getitem().NIG_HR!), "#,###.#")));
     list.add(createRow2(screenWidth,'TĂNG CA ĐÊM 夜班加班(GIỜ小時）',Utility.numbertoStringFormat((filc06aaController.getitem().NIG_OT!), "#,###.#")));
+    list.add(createRow2(screenWidth,'TĂNG CA CA ĐÊM 夜班加班(GIỜ小時）',Utility.numbertoStringFormat((filc06aaController.getitem().NIG_OV!), "#,###.#")));
+
 
     list.add(createRow1(screenWidth, 'CHỦ NHẬT 星期',false));
     list.add(createRow2(screenWidth,'NGÀY CHỦ NHẬT 週日班(GIỜ小時）',Utility.numbertoStringFormat((filc06aaController.getitem().DOF_HR!), "#,###.#")));

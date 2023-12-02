@@ -50,7 +50,14 @@ class Filc04aaController extends GetxController
     _items.removeAt(index);
   }
 
-
+void changebyCheck(bool isCheck)
+{
+  for(int i=0;i<_items.length;i++)
+    {
+      _items[i].MEA_BT=isCheck;
+    }
+  _items.refresh();
+}
   void userInit()
   {
     _items.clear();

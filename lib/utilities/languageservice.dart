@@ -80,7 +80,9 @@ class LanguageService
       'APV_N2':'已批准',
       'AppvovalVacation':'是否同意批准',
       'modify':'沒有權限',
-      'cannotaccess':'您無權訪問'
+      'cannotaccess':'您無權訪問',
+      'vacationyes':'批准',
+      'vacationno':'不批准'
 
     },
     'vn': {
@@ -159,7 +161,9 @@ class LanguageService
        'APV_N2':'P.đã duyệt',
       'AppvovalVacation':'Bạn có đồng ý duyệt phép!',
       'modify':'Bạn không thể nhập phép!',
-      'cannotaccess':'Bạn không có quyền truy cập'
+      'cannotaccess':'Bạn không có quyền truy cập',
+      'vacationyes':'Duyệt Phép',
+      'vacationno':'Không Duyệt Phép'
     }
   };
   static set language(String lang) {
@@ -402,6 +406,15 @@ class LanguageService
   static String get cannotaccess {
     return _localizedValues[defaultLanguage]!['cannotaccess']!;
   }
+
+  static String get vacationyes {
+    return _localizedValues[defaultLanguage]!['vacationyes']!;
+  }
+  static String get vacationno {
+    return _localizedValues[defaultLanguage]!['vacationno']!;
+  }
+
+
 }
 
 

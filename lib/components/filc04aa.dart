@@ -55,7 +55,7 @@ class FILC04AA
           APV_FG: json['APV_FG'] as bool,
           REM_DR: json['REM_DR'] ??'',
           ACT_DR: json['ACT_DR'] ??'',
-          MEA_BT: json['MEA_BT'] as bool,
+          MEA_BT: false,
           SHI_ID: json['SHI_ID'] ??'',
         APV_N1: json['APV_N1'] as bool,
         APV_N2: json['APV_N2'] as bool,

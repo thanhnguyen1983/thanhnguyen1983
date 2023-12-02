@@ -8,12 +8,34 @@ import 'package:humanweb/state/daterangedate.dart';
 import 'package:humanweb/state/filb01acontroller.dart';
 import 'package:humanweb/state/statuscodecontroller.dart';
 import 'package:humanweb/state/systemcontroller.dart';
+import 'dart:html' as html;
+bool hasClearedHistory = false;
 void main()  {
  // await GetStorage.init();
+ // clearHistoryOnce();
+
+  //String timestamp = DateTime.now().millisecondsSinceEpoch.toString();
+ // String assetUrl = 'assets/my_asset.css?$timestamp';
+
+  // Load the newest version of the Flutter web app
+ // html.window.location.replace(assetUrl);
 
   runApp( MyApp());
+ // clearHistoryOnce();
 }
 
+void clearHistoryOnce() {
+  if (!hasClearedHistory) {
+    // Clear local storage
+    html.window.localStorage.clear();
+
+    // Set the flag to true to indicate that the history has been cleared
+    hasClearedHistory = true;
+
+    // Reload the page to reflect the changes
+    html.window.location.reload();
+  }
+}
 class MyApp extends StatefulWidget
 {
   @override
