@@ -92,6 +92,7 @@ class  _ViewVacation extends State<ViewVacation>
           children: <Widget>[
             contentBoxVacation(context),
             contentBoxDayorHour(context),
+           SizedBox(height: 10,),
            // const Text('Tu ngay den ngay',style: TextStyle(fontSize: 18),),
             DateRangePickerWidget(),
 
@@ -106,11 +107,14 @@ class  _ViewVacation extends State<ViewVacation>
 
             Container(
 
-                width:double.infinity ,
+                width:120 ,
                 padding: const EdgeInsets.all(20),
                 alignment: Alignment.topCenter,
-                child:TextButton(
-                  style: TextButton.styleFrom(foregroundColor: Colors.white,backgroundColor:Colors.blue.shade900),
+                child:OutlinedButton(
+                  style: OutlinedButton.styleFrom(
+                    shape: const StadiumBorder(),
+                    side: const BorderSide(width: 2, color: Colors.deepOrangeAccent),
+                  ),
                   child: Text(LanguageService.OK),
 
 
@@ -216,7 +220,8 @@ class  _ViewVacation extends State<ViewVacation>
                     Text('${LanguageService.Hour}:${Utility.numbertoStringHour(filc04aaController.itemsAll[index].STR_TM!) }'),
                     Text(LanguageService.To),
                     Text('${LanguageService.Hour}:${Utility.numbertoStringHour(filc04aaController.itemsAll[index].END_TM!) }'),
-                  ],)
+                  ],),
+
               ],
             ),
           )),
@@ -251,7 +256,7 @@ class  _ViewVacation extends State<ViewVacation>
          }
           msg="${LanguageService.defaultLanguage=='vn'?fila15aController.findItem(filc04aController.items[index].LEA_ID!).LEA_VN:fila15aController.findItem(filc04aController.items[index].LEA_ID!).LEA_CH}:$totalinyear \n ${LanguageService.DIS_QT}:$total \n ${LanguageService.CAN_QT}:$can_qt";
        }
-        messageAllert(msg,'Warning');
+        messageAllert(msg,LanguageService.Notification);
       },
       child: Card(
           child: Container(
@@ -304,7 +309,9 @@ class  _ViewVacation extends State<ViewVacation>
                   Text('${LanguageService.Hour}:${Utility.numbertoStringHour(filc04aController.items[index].STR_TM!) }'),
                   Text(LanguageService.To),
                   Text('${LanguageService.Hour}:${Utility.numbertoStringHour(filc04aController.items[index].END_TM!) }'),
-                ],)
+
+                ],),
+                Row(children: [Text('user:${filc04aController.items[index].BLT_NM} ,${filc04aController.items[index].BLT_DT}')],)
               ],
             ),
           )),

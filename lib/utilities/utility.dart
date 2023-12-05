@@ -173,4 +173,12 @@ class Utility{
       return "";
     return sql.replaceAll('\'', '\'\'');
   }
+  static bool isMobile(double screenWidth,double screenHeight) {
+
+
+    if(screenWidth<screenHeight)
+      return true;
+    return false;
+
+  }
 }

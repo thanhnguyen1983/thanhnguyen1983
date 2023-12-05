@@ -54,15 +54,15 @@ class ApiService
 
   static Future<List<DashBoardClass>> getDashBoard(int yyyy,int mm)async
   {
-    Response res = await get(Uri.parse(kApiurl+'DashBoard/getDashBoard?yyyy=$yyyy&MM=$mm&REF_ID=${systemController.username}'),headers: headers);
-    print(kApiurl+'DashBoard/getDashBoard?yyyy=$yyyy&MM=$mm&REF_ID=${systemController.username}');
+    Response res = await get(Uri.parse('${kApiurl}DashBoard/getDashBoard?yyyy=$yyyy&MM=$mm&REF_ID=${systemController.username}'),headers: headers);
+    print('${kApiurl}DashBoard/getDashBoard?yyyy=$yyyy&MM=$mm&REF_ID=${systemController.username}');
     if (res.statusCode == 200) {
       List<dynamic> body = jsonDecode(res.body);
 
       List<DashBoardClass> users = body.map((dynamic item) => DashBoardClass.fromJson(item))
           .toList();
 
-      print('getDashBoard $users' );
+      //print('getDashBoard ${$users.fi}' );
       return users;
     } else {
       print('cannot connect');

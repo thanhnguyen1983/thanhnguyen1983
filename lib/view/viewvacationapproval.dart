@@ -36,11 +36,14 @@ class  _ViewVacationApproval extends State<ViewVacationApproval>
   @override
   initState() {
     super.initState();
-
-   // filc04aaController.fetchProducts(systemController.username.value);
-
+  //  fetchData();
+   // filc04aaController.fetchProducts(systemController.username.value, Utility.datetoStringFormat(DateTime.now(),'yyyyMM'), '2');///chua duyet
   }
-
+  void fetchData() async {
+    filc04aaController.fetchProducts(systemController.username.value, Utility.datetoStringFormat(DateTime.now(),'yyyyMM'), '1');///chua duyet
+  // filc04aaController.fetchProductsAll(systemController.username.value, Utility.datetoStringFormat(DateTime.now(),'yyyyMM'), '2');
+    print('fetchData');
+  }
   @override
   Widget build(BuildContext context) {
 
@@ -79,6 +82,7 @@ class  _ViewVacationApproval extends State<ViewVacationApproval>
                 filc04aaController.fetchProducts(systemController.username.value, Utility.datetoStringFormat(DateTime.now(),'yyyyMM'), '1');///chua duyet
               }
           });
+
         }
         ,
         currentIndex: currentIndex,
@@ -135,7 +139,7 @@ class  _ViewVacationApproval extends State<ViewVacationApproval>
   }
   Padding buildListView(BuildContext context)
   {
-    print('buildListView1');
+    print('buildListView');
     return  Padding(
       padding: const EdgeInsets.all(5),
       child:Obx(()=> filc04aaController.isLoading.isTrue ? const Center(child: CircularProgressIndicator()): ListView.builder(itemCount: filc04aaController.items.isEmpty ?0: filc04aaController.items.length, itemBuilder: (context,index) =>  itemBuild(context,index))
@@ -147,19 +151,19 @@ class  _ViewVacationApproval extends State<ViewVacationApproval>
     print('buildListView1');
     return  Padding(
       padding: const EdgeInsets.all(5),
-      child:Obx(()=> filc04aaController.isLoading.isTrue ? const Center(child: CircularProgressIndicator()): ListView.builder(itemCount: filc04aaController.itemsAll.length, itemBuilder: (context,index) =>  itemBuild1(context,index))
+      child:Obx(()=> filc04aaController.isLoadingAll.isTrue ? const Center(child: CircularProgressIndicator()): ListView.builder(itemCount: filc04aaController.itemsAll.length, itemBuilder: (context,index) =>  itemBuild1(context,index))
       ),
     );
   }
 
 
-  itemBuildold(BuildContext context,int index)
+  /*itemBuildold(BuildContext context,int index)
   {
 
 
     return InkWell(
       onTap: () async {
-       /* BaseAlertDialog alert =BaseAlertDialog(title: filc04aaController.items[index].EMP_NM!, content: LanguageService.AppvovalVacation, yesOnPressed:() async {
+       *//* BaseAlertDialog alert =BaseAlertDialog(title: filc04aaController.items[index].EMP_NM!, content: LanguageService.AppvovalVacation, yesOnPressed:() async {
 
           int STY=1;
           if(systemController.username.toString()==filc04aaController.items[index].REF_ID)
@@ -192,10 +196,8 @@ class  _ViewVacationApproval extends State<ViewVacationApproval>
         showDialog(context: context,builder: (BuildContext context) {
           return alert;
         }
-        );*/
-      setState(() {
-        filc04aaController.items[index].APV_FG= filc04aaController.items[index].APV_FG!;
-      });
+        );*//*
+
       },
       child: Card(
           child: Container(
@@ -255,7 +257,7 @@ class  _ViewVacationApproval extends State<ViewVacationApproval>
             ),
           )),
     );
-  }
+  }*/
 itemBuild(BuildContext context,int index)
 {
 

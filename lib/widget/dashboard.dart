@@ -14,7 +14,7 @@ import 'package:humanweb/view/viewvacationapproval.dart';
 import 'package:humanweb/widget/weeklyreportcards.dart';
 import 'package:mat_month_picker_dialog/mat_month_picker_dialog.dart';
 
-
+import 'dart:html' as html;
 //import 'package:month_picker_dialog_2/month_picker_dialog.dart';
 import '../components/filb01a.dart';
 import '../page/frmSecurity.dart';
@@ -30,13 +30,55 @@ class Dashboard extends StatefulWidget
   @override
   _DashboardState createState()=> _DashboardState();
 }
-class _DashboardState extends State<Dashboard> {
+class _DashboardState extends State<Dashboard>{
   DateTime selectedDate = DateTime.now();
   SystemController stateSystem = Get.find();
   Filb01aController filb01aController=Get.find();
   DashBoardController dashBoardController=Get.put(DashBoardController());
 
   Filc04aaController filc04aaController=Get.find();
+bool _firstshow=true;
+  @override
+  void initState() {
+    super.initState();
+    html.window.onFocus.listen((event) {
+      print('Window focused');
+      fetchData();
+      // Your logic when the tab gains focus or is restored
+    });
+
+    html.window.onBlur.listen((event) {
+      print('Window blurred');
+      _firstshow=true;
+      // Your logic when the tab loses focus
+    });
+  }
+
+  @override
+  void dispose() {
+
+    super.dispose();
+  }
+
+
+  void fetchData() async {
+   if(_firstshow) {
+
+
+
+
+     dashBoardController.fetchProducts(DateTime
+         .now()
+         .year, DateTime
+         .now()
+         .month);
+
+     filc04aaController.fetchProducts(stateSystem.username.value, Utility.datetoStringFormat(DateTime.now(),'yyyyMM'), '1');
+
+     print('fetchData');
+     _firstshow=false;
+   }
+  }
 
   @override
   Widget build(BuildContext context) {

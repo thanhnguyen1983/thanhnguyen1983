@@ -7,6 +7,7 @@ import '../components/filc04aa.dart';
 class Filc04aaController extends GetxController
 {
   var isLoading =true.obs;
+  var isLoadingAll =true.obs;
   final RxList<FILC04AA> _items =<FILC04AA>[].obs;
   final RxList<FILC04AA> _itemsall =<FILC04AA>[].obs;
 
@@ -27,13 +28,13 @@ class Filc04aaController extends GetxController
   void fetchProductsAll(String EMP_ID,String YYYYMM,String sty)async
   {
     try{
-      isLoading(true);
+      isLoadingAll(true);
       _itemsall.clear();
       var products=await ApiService.getFILC04AA(EMP_ID,YYYYMM,sty);
       _itemsall.assignAll(products);
       print(products.toList());
     }finally{
-      isLoading(false);
+      isLoadingAll(false);
     }
   }
 

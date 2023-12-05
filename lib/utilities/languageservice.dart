@@ -82,7 +82,8 @@ class LanguageService
       'modify':'沒有權限',
       'cannotaccess':'您無權訪問',
       'vacationyes':'批准',
-      'vacationno':'不批准'
+      'vacationno':'不批准',
+      'Notification':'通知'
 
     },
     'vn': {
@@ -163,7 +164,8 @@ class LanguageService
       'modify':'Bạn không thể nhập phép!',
       'cannotaccess':'Bạn không có quyền truy cập',
       'vacationyes':'Duyệt Phép',
-      'vacationno':'Không Duyệt Phép'
+      'vacationno':'Không Duyệt Phép',
+      'Notification':'Thông Báo'
     }
   };
   static set language(String lang) {
@@ -412,6 +414,9 @@ class LanguageService
   }
   static String get vacationno {
     return _localizedValues[defaultLanguage]!['vacationno']!;
+  }
+  static String get Notification {
+    return _localizedValues[defaultLanguage]!['Notification']!;
   }
 
 

@@ -1,3 +1,4 @@
+import 'package:animate_do/animate_do.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -370,12 +371,26 @@ class _LoginScreenState extends State<LoginScreen> {
       ),
     );
   }
-  bool isMobile() {
+  /*bool isMobile() {
     if (kIsWeb) {
       var userAgent = html.window.navigator.userAgent;
       return userAgent.contains('Android') || userAgent.contains('Mobile');
     }
     return false;
+  }*/
+  bool isMobile(double screenWidth,double screenHeight) {
+
+
+    if(screenWidth<screenHeight)
+      return true;
+    return false;
+    if((screenWidth==1024)||(screenWidth==1366)||(screenWidth==1920)||(screenWidth==2560) ) {
+      return false;
+    }
+    return true;
+
+
+
   }
 
 
@@ -451,7 +466,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 }, // needed
               child: Image.asset(
                 "images/1.png",
-                width: 22,
+                width: 25,
                 fit: BoxFit.cover,
               ),
             ),
@@ -471,7 +486,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 }, // needed
               child: Image.asset(
                 "images/14.png",
-                width: 22,
+                width: 25,
                 fit: BoxFit.cover,
               ),
             ),
@@ -491,7 +506,14 @@ class _LoginScreenState extends State<LoginScreen> {
     //DeviceInfoPlugin deviceInfo = DeviceInfoPlugin();
     // late TargetPlatform platform;
 
-    final  TargetPlatform platform = Theme.of(context).platform;
+  //  final  TargetPlatform platform = Theme.of(context).platform;
+
+    double screenWidth = MediaQuery.of(context).size.width;
+    double screenHeight = MediaQuery.of(context).size.height;
+
+    //print('$screenWidth - $screenHeight');
+    //systemController.isPhone.value=isMobile(screenWidth,screenHeight);
+    bool isPhone=isMobile(screenWidth,screenHeight);
 
      return MaterialApp(
          debugShowCheckedModeBanner: false,
@@ -499,327 +521,358 @@ class _LoginScreenState extends State<LoginScreen> {
        home: Scaffold(
          appBar: AppBar(title: const Text('Humanresouce'),
          ),
-         body: Padding(
-             padding: const EdgeInsets.all(10),
-             child: (isMobile()==false ? Center(child: Container(decoration: BoxDecoration(borderRadius: BorderRadius.circular(5),border: Border.all(width: 1,color: Colors.grey)),height: 450,width: 400,child:ListView(
-               children: <Widget>[
-                 Container(
-                     alignment: Alignment.center,
-                     padding: const EdgeInsets.all(10),
-                     child: const Text(
-                       'Humanresouce Manager',
-                       style: TextStyle(
-                           color: Colors.blue,
-                           fontWeight: FontWeight.w500,
-                           fontSize: 30),
-                     )),
-                 Container(
-                     alignment: Alignment.center,
-                     padding: const EdgeInsets.all(10),
-                     child:  Text(
-                       LanguageService.LOG_IN,
-                       style: const TextStyle(fontSize: 20),
-                     )),
-                 Container(
-                   padding: const EdgeInsets.all(10),
-                   child: TextField(
+         body: isPhone?LoginPhone(isPhone): Stack(children: [
+           Container(
+             decoration: const BoxDecoration(
+               image: DecorationImage(
+                 image: AssetImage('images/bg.jpg'), // Replace with the actual path to your image
+                 fit: BoxFit.cover,
+               ),
+             ),
+           ),
+           Padding(
 
-                     controller: emailController,
-                     decoration:  InputDecoration(
-                       labelText: LanguageService.EMP_ID,
-                       focusedBorder: OutlineInputBorder(borderSide: BorderSide(color: Colors.orange,width: 2.0)),
-                       enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: Colors.blue,width: 2.0)),
-                     ),
-                     onChanged: ((String email) {
-                       setState(() {
-                         _email=email;
-                       });
-                     }
-                     ),
-                   ),
-                 ),
-                 Container(
-                   padding: const EdgeInsets.fromLTRB(10, 10, 10, 0),
-                   child: TextField(
-                     obscureText: !_passwordVisible,
-                     controller: passwordController,
-                     decoration:  InputDecoration(
-                       suffixIcon: IconButton  (
-                         icon: Icon(
-                           _passwordVisible?Icons.visibility:Icons.visibility_off,color: Theme.of(context).primaryColorDark,
-                         ),
-                         onPressed: (){
-                           setState(() {
-                             _passwordVisible = !_passwordVisible;
-                           });
-                         },
-                       ),
-                       labelText: LanguageService.PAS_NO,
-                       focusedBorder: OutlineInputBorder(borderSide: BorderSide(color: Colors.orange,width: 2.0)),
-                       enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: Colors.blue,width: 2.0)),
-                     ),
-                     onChanged: ((String pass){
-                       setState(() {
-                         _pass=pass;
-                       });
-                     }),
-                   ),
-                 ),
-                 const SizedBox(
-                   height: 10.0,
-                 ),
-                 TextButton(
-                   onPressed: () {
-                     Get.to(ForgotPassWord());
-                   },
-                   child:  Text(LanguageService.FOR_DR,),
-                 ),
-                 const SizedBox(
-                   height: 10.0,
-                 ),
-                 Container(
-                     height: 50,
-                     padding: const EdgeInsets.fromLTRB(10, 0, 10, 0),
-                     child: ElevatedButton(
-                       child:  Text(LanguageService.LOG_IN),
-                       onPressed: () async {
-                         if(_email!='' && _pass!='')
-                         {
-                           try
-                           {
-                             Utility.showLoaderDialog(context);
-                             await filb01aController.Login(_email!, _pass!);
-                             if (statusCodeController.statuscode.value == 200) {
-                               if (filb01aController.items.isNotEmpty) {
-                                 SystemController systemController = Get.put(SystemController());
-                                 systemController.username.value =
-                                 filb01aController.items[0].EMP_ID!;
-                                 systemController.token.value = filb01aController.items[0].token!;
-                                 systemController.GROUP_ID.value = filb01aController.items[0].GROUP_ID!;
-                                 Filc01aController filc01aController = Get.put(
-                                     Filc01aController());
-                                 Fila15aController fila15aController = Get.put(
-                                     Fila15aController());
-                                 Filc03aController filc03aController = Get.put(
-                                     Filc03aController());
-                                 Filc06aController filc06aController = Get.put(
-                                     Filc06aController());
-                                 Filc06aaController filc06aaController = Get.put(
-                                     Filc06aaController());
-                                 Sys_NotificationController sys_notificationController = Get.put(
-                                     Sys_NotificationController());
-                                 Gp_sys_ShiftController gp_sys_shiftController = Get.put(
-                                     Gp_sys_ShiftController());
+             padding:  EdgeInsets.all(isPhone?0:20.0),
+             child:  Center(child: Container(decoration: BoxDecoration(color: Colors.grey.shade200,borderRadius: BorderRadius.circular(5),border: Border.all(width: 1,color: Colors.grey)),height: isPhone?screenHeight:580,width:  isPhone?screenWidth :500,child: formLogin(isMobile(screenWidth,screenHeight)),),) ,
 
-                                 filc04aaController.fetchProducts(systemController.username.value,'','1');
-                                 Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(
-                                     builder: (BuildContext context) =>
-                                     filb01aController.items[0].iPrivilege == 4
-                                         ? const PageHome()
-                                         : MyHomePage()), (Route<dynamic> route) => false);
-                               }
-                             }
-                           }finally
-                           {
-                             if (statusCodeController.statuscode.value != 200) {
-                               Navigator.pop(context);
-                               messageAllert(LanguageService.errorlogin, 'Warning');
-                             }
-                           }
-
-                         }else
-                         {
-                           messageAllert('Bạn chưa nhập tên đăng nhập hoặc mật khẩu.','Warning');
-                         }
-                       },
-                     )
-                 ),
-                 const SizedBox(
-                   height: 10.0,
-                 ),
-                 Row(
-                   children: <Widget>[
-                     Text(LanguageService.donthaveaccount),
-                     TextButton(
-                       child:  Text(
-                         LanguageService.signup,
-                         style: TextStyle(fontSize: 20),
-                       ),
-                       onPressed: () {
-                         Get.to(SignUp());
-                       },
-                     )
-                   ],
-                   mainAxisAlignment: MainAxisAlignment.center,
-                 ),
-
-                 const SizedBox(
-                   height: 10.0,
-                 ),
-                 _buildLanguage()
-               ],
-             ))):ListView(
-               children: <Widget>[
-                 Container(
-                     alignment: Alignment.center,
-                     padding: const EdgeInsets.all(10),
-                     child: const Text(
-                       'Humanresouce Manager',
-                       style: TextStyle(
-                           color: Colors.blue,
-                           fontWeight: FontWeight.w500,
-                           fontSize: 30),
-                     )),
-                 Container(
-                     alignment: Alignment.center,
-                     padding: const EdgeInsets.all(10),
-                     child:  Text(
-                       LanguageService.LOG_IN,
-                       style: const TextStyle(fontSize: 20),
-                     )),
-                 Container(
-                   padding: const EdgeInsets.all(10),
-                   child: TextField(
-
-                     controller: emailController,
-                     decoration:  InputDecoration(
-                       labelText: LanguageService.EMP_ID,
-                      focusedBorder: OutlineInputBorder(borderSide: BorderSide(color: Colors.orange,width: 2.0)),
-                       enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: Colors.blue,width: 2.0)),
-                     ),
-                     onChanged: ((String email) {
-                       setState(() {
-                         _email=email;
-                       });
-                     }
-                     ),
-                   ),
-                 ),
-                 Container(
-                   padding: const EdgeInsets.fromLTRB(10, 10, 10, 0),
-                   child: TextField(
-                     obscureText: !_passwordVisible,
-                     controller: passwordController,
-                     decoration:  InputDecoration(
-                       suffixIcon: IconButton  (
-                         icon: Icon(
-                           _passwordVisible?Icons.visibility:Icons.visibility_off,color: Theme.of(context).primaryColorDark,
-                         ),
-                         onPressed: (){
-                           setState(() {
-                             _passwordVisible = !_passwordVisible;
-                           });
-                         },
-                       ),
-                       labelText: LanguageService.PAS_NO,
-                       focusedBorder: OutlineInputBorder(borderSide: BorderSide(color: Colors.orange,width: 2.0)),
-                       enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: Colors.blue,width: 2.0)),
-                     ),
-                     onChanged: ((String pass){
-                       setState(() {
-                         _pass=pass;
-                       });
-                     }),
-                   ),
-                 ),
-                 const SizedBox(
-                   height: 10.0,
-                 ),
-                 TextButton(
-                   onPressed: () {
-                     Get.to(ForgotPassWord());
-                   },
-                   child:  Text(LanguageService.FOR_DR,),
-                 ),
-                 const SizedBox(
-                   height: 10.0,
-                 ),
-                 Container(
-                     height: 50,
-                     padding: const EdgeInsets.fromLTRB(10, 0, 10, 0),
-                     child: ElevatedButton(
-                       child:  Text(LanguageService.LOG_IN),
-                       onPressed: () async {
-                         if(_email!='' && _pass!='')
-                         {
-                            try
-                                {
-                                  Utility.showLoaderDialog(context);
-                                  await filb01aController.Login(_email!, _pass!);
-                                  if (statusCodeController.statuscode.value == 200) {
-                                    if (filb01aController.items.isNotEmpty) {
-                                      SystemController systemController = Get.put(SystemController());
-                                      systemController.username.value =
-                                      filb01aController.items[0].EMP_ID!;
-                                      systemController.token.value = filb01aController.items[0].token!;
-                                      systemController.GROUP_ID.value = filb01aController.items[0].GROUP_ID!;
-                                      Filc01aController filc01aController = Get.put(
-                                          Filc01aController());
-                                      Fila15aController fila15aController = Get.put(
-                                          Fila15aController());
-                                      Filc03aController filc03aController = Get.put(
-                                          Filc03aController());
-                                      Filc06aController filc06aController = Get.put(
-                                          Filc06aController());
-                                      Filc06aaController filc06aaController = Get.put(
-                                          Filc06aaController());
-                                      Sys_NotificationController sys_notificationController = Get.put(
-                                          Sys_NotificationController());
-                                      Gp_sys_ShiftController gp_sys_shiftController = Get.put(
-                                          Gp_sys_ShiftController());
-
-                                      filc04aaController.fetchProducts(systemController.username.value,'','1');
-                                      Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(
-                                          builder: (BuildContext context) =>
-                                          filb01aController.items[0].iPrivilege == 4
-                                              ? const PageHome()
-                                              : MyHomePage()), (Route<dynamic> route) => false);
-                                    }
-                                  }
-                                }finally
-                                {
-                                  if (statusCodeController.statuscode.value != 200) {
-                                    Navigator.pop(context);
-                                    messageAllert(LanguageService.errorlogin, 'Warning');
-                                  }
-                                }
-
-                         }else
-                         {
-                            messageAllert('Bạn chưa nhập tên đăng nhập hoặc mật khẩu.','Warning');
-                         }
-                       },
-                     )
-                 ),
-                 const SizedBox(
-                   height: 10.0,
-                 ),
-                 Row(
-                   children: <Widget>[
-                     Text(LanguageService.donthaveaccount),
-                     TextButton(
-                       child:  Text(
-                         LanguageService.signup,
-                         style: TextStyle(fontSize: 20),
-                       ),
-                       onPressed: () {
-                         Get.to(SignUp());
-                       },
-                     )
-                   ],
-                   mainAxisAlignment: MainAxisAlignment.center,
-                 ),
-
-                 const SizedBox(
-                   height: 10.0,
-                 ),
-                 _buildLanguage()
-               ],
-             ))),
+           )
+         ],),
        )
      );
   }
+  /*Widget buildold(BuildContext context) {
 
+    //DeviceInfoPlugin deviceInfo = DeviceInfoPlugin();
+    // late TargetPlatform platform;
+
+    final  TargetPlatform platform = Theme.of(context).platform;
+
+    return MaterialApp(
+        debugShowCheckedModeBanner: false,
+        title: 'Humanresouce',
+        home: Scaffold(
+          appBar: AppBar(title: const Text('Humanresouce'),
+          ),
+          body: Padding(
+              padding: const EdgeInsets.all(10),
+              child: (isMobile()==false ? Center(child: Container(decoration: BoxDecoration(borderRadius: BorderRadius.circular(5),border: Border.all(width: 1,color: Colors.grey)),height: 450,width: 400,child:ListView(
+                children: <Widget>[
+                  Container(
+                      alignment: Alignment.center,
+                      padding: const EdgeInsets.all(10),
+                      child: const Text(
+                        'Humanresouce Manager',
+                        style: TextStyle(
+                            color: Colors.blue,
+                            fontWeight: FontWeight.w500,
+                            fontSize: 30),
+                      )),
+                  Container(
+                      alignment: Alignment.center,
+                      padding: const EdgeInsets.all(10),
+                      child:  Text(
+                        LanguageService.LOG_IN,
+                        style: const TextStyle(fontSize: 20),
+                      )),
+                  Container(
+                    padding: const EdgeInsets.all(10),
+                    child: TextField(
+
+                      controller: emailController,
+                      decoration:  InputDecoration(
+                        labelText: LanguageService.EMP_ID,
+                        focusedBorder: OutlineInputBorder(borderSide: BorderSide(color: Colors.orange,width: 2.0)),
+                        enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: Colors.blue,width: 2.0)),
+                      ),
+                      onChanged: ((String email) {
+                        setState(() {
+                          _email=email;
+                        });
+                      }
+                      ),
+                    ),
+                  ),
+                  Container(
+                    padding: const EdgeInsets.fromLTRB(10, 10, 10, 0),
+                    child: TextField(
+                      obscureText: !_passwordVisible,
+                      controller: passwordController,
+                      decoration:  InputDecoration(
+                        suffixIcon: IconButton  (
+                          icon: Icon(
+                            _passwordVisible?Icons.visibility:Icons.visibility_off,color: Theme.of(context).primaryColorDark,
+                          ),
+                          onPressed: (){
+                            setState(() {
+                              _passwordVisible = !_passwordVisible;
+                            });
+                          },
+                        ),
+                        labelText: LanguageService.PAS_NO,
+                        focusedBorder: OutlineInputBorder(borderSide: BorderSide(color: Colors.orange,width: 2.0)),
+                        enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: Colors.blue,width: 2.0)),
+                      ),
+                      onChanged: ((String pass){
+                        setState(() {
+                          _pass=pass;
+                        });
+                      }),
+                    ),
+                  ),
+                  const SizedBox(
+                    height: 10.0,
+                  ),
+                  TextButton(
+                    onPressed: () {
+                      Get.to(ForgotPassWord());
+                    },
+                    child:  Text(LanguageService.FOR_DR,),
+                  ),
+                  const SizedBox(
+                    height: 10.0,
+                  ),
+                  Container(
+                      height: 50,
+                      padding: const EdgeInsets.fromLTRB(10, 0, 10, 0),
+                      child: ElevatedButton(
+                        child:  Text(LanguageService.LOG_IN),
+                        onPressed: () async {
+                          if(_email!='' && _pass!='')
+                          {
+                            try
+                            {
+                              Utility.showLoaderDialog(context);
+                              await filb01aController.Login(_email!, _pass!);
+                              if (statusCodeController.statuscode.value == 200) {
+                                if (filb01aController.items.isNotEmpty) {
+                                  SystemController systemController = Get.put(SystemController());
+                                  systemController.username.value =
+                                  filb01aController.items[0].EMP_ID!;
+                                  systemController.token.value = filb01aController.items[0].token!;
+                                  systemController.GROUP_ID.value = filb01aController.items[0].GROUP_ID!;
+                                  Filc01aController filc01aController = Get.put(
+                                      Filc01aController());
+                                  Fila15aController fila15aController = Get.put(
+                                      Fila15aController());
+                                  Filc03aController filc03aController = Get.put(
+                                      Filc03aController());
+                                  Filc06aController filc06aController = Get.put(
+                                      Filc06aController());
+                                  Filc06aaController filc06aaController = Get.put(
+                                      Filc06aaController());
+                                  Sys_NotificationController sys_notificationController = Get.put(
+                                      Sys_NotificationController());
+                                  Gp_sys_ShiftController gp_sys_shiftController = Get.put(
+                                      Gp_sys_ShiftController());
+
+                                  filc04aaController.fetchProducts(systemController.username.value,'','1');
+                                  Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(
+                                      builder: (BuildContext context) =>
+                                      filb01aController.items[0].iPrivilege == 4
+                                          ? const PageHome()
+                                          : MyHomePage()), (Route<dynamic> route) => false);
+                                }
+                              }
+                            }finally
+                            {
+                              if (statusCodeController.statuscode.value != 200) {
+                                Navigator.pop(context);
+                                messageAllert(LanguageService.errorlogin, 'Warning');
+                              }
+                            }
+
+                          }else
+                          {
+                            messageAllert('Bạn chưa nhập tên đăng nhập hoặc mật khẩu.','Warning');
+                          }
+                        },
+                      )
+                  ),
+                  const SizedBox(
+                    height: 10.0,
+                  ),
+                  Row(
+                    children: <Widget>[
+                      Text(LanguageService.donthaveaccount),
+                      TextButton(
+                        child:  Text(
+                          LanguageService.signup,
+                          style: TextStyle(fontSize: 20),
+                        ),
+                        onPressed: () {
+                          Get.to(SignUp());
+                        },
+                      )
+                    ],
+                    mainAxisAlignment: MainAxisAlignment.center,
+                  ),
+
+                  const SizedBox(
+                    height: 10.0,
+                  ),
+                  _buildLanguage()
+                ],
+              ))):ListView(
+                children: <Widget>[
+                  Container(
+                      alignment: Alignment.center,
+                      padding: const EdgeInsets.all(10),
+                      child: const Text(
+                        'Humanresouce Manager',
+                        style: TextStyle(
+                            color: Colors.blue,
+                            fontWeight: FontWeight.w500,
+                            fontSize: 30),
+                      )),
+                  Container(
+                      alignment: Alignment.center,
+                      padding: const EdgeInsets.all(10),
+                      child:  Text(
+                        LanguageService.LOG_IN,
+                        style: const TextStyle(fontSize: 20),
+                      )),
+                  Container(
+                    padding: const EdgeInsets.all(10),
+                    child: TextField(
+
+                      controller: emailController,
+                      decoration:  InputDecoration(
+                        labelText: LanguageService.EMP_ID,
+                        focusedBorder: OutlineInputBorder(borderSide: BorderSide(color: Colors.orange,width: 2.0)),
+                        enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: Colors.blue,width: 2.0)),
+                      ),
+                      onChanged: ((String email) {
+                        setState(() {
+                          _email=email;
+                        });
+                      }
+                      ),
+                    ),
+                  ),
+                  Container(
+                    padding: const EdgeInsets.fromLTRB(10, 10, 10, 0),
+                    child: TextField(
+                      obscureText: !_passwordVisible,
+                      controller: passwordController,
+                      decoration:  InputDecoration(
+                        suffixIcon: IconButton  (
+                          icon: Icon(
+                            _passwordVisible?Icons.visibility:Icons.visibility_off,color: Theme.of(context).primaryColorDark,
+                          ),
+                          onPressed: (){
+                            setState(() {
+                              _passwordVisible = !_passwordVisible;
+                            });
+                          },
+                        ),
+                        labelText: LanguageService.PAS_NO,
+                        focusedBorder: OutlineInputBorder(borderSide: BorderSide(color: Colors.orange,width: 2.0)),
+                        enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: Colors.blue,width: 2.0)),
+                      ),
+                      onChanged: ((String pass){
+                        setState(() {
+                          _pass=pass;
+                        });
+                      }),
+                    ),
+                  ),
+                  const SizedBox(
+                    height: 10.0,
+                  ),
+                  TextButton(
+                    onPressed: () {
+                      Get.to(ForgotPassWord());
+                    },
+                    child:  Text(LanguageService.FOR_DR,),
+                  ),
+                  const SizedBox(
+                    height: 10.0,
+                  ),
+                  Container(
+                      height: 50,
+                      padding: const EdgeInsets.fromLTRB(10, 0, 10, 0),
+                      child: ElevatedButton(
+                        child:  Text(LanguageService.LOG_IN),
+                        onPressed: () async {
+                          if(_email!='' && _pass!='')
+                          {
+                            try
+                            {
+                              Utility.showLoaderDialog(context);
+                              await filb01aController.Login(_email!, _pass!);
+                              if (statusCodeController.statuscode.value == 200) {
+                                if (filb01aController.items.isNotEmpty) {
+                                  SystemController systemController = Get.put(SystemController());
+                                  systemController.username.value =
+                                  filb01aController.items[0].EMP_ID!;
+                                  systemController.token.value = filb01aController.items[0].token!;
+                                  systemController.GROUP_ID.value = filb01aController.items[0].GROUP_ID!;
+                                  Filc01aController filc01aController = Get.put(
+                                      Filc01aController());
+                                  Fila15aController fila15aController = Get.put(
+                                      Fila15aController());
+                                  Filc03aController filc03aController = Get.put(
+                                      Filc03aController());
+                                  Filc06aController filc06aController = Get.put(
+                                      Filc06aController());
+                                  Filc06aaController filc06aaController = Get.put(
+                                      Filc06aaController());
+                                  Sys_NotificationController sys_notificationController = Get.put(
+                                      Sys_NotificationController());
+                                  Gp_sys_ShiftController gp_sys_shiftController = Get.put(
+                                      Gp_sys_ShiftController());
+
+                                  filc04aaController.fetchProducts(systemController.username.value,'','1');
+                                  Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(
+                                      builder: (BuildContext context) =>
+                                      filb01aController.items[0].iPrivilege == 4
+                                          ? const PageHome()
+                                          : MyHomePage()), (Route<dynamic> route) => false);
+                                }
+                              }
+                            }finally
+                            {
+                              if (statusCodeController.statuscode.value != 200) {
+                                Navigator.pop(context);
+                                messageAllert(LanguageService.errorlogin, 'Warning');
+                              }
+                            }
+
+                          }else
+                          {
+                            messageAllert('Bạn chưa nhập tên đăng nhập hoặc mật khẩu.','Warning');
+                          }
+                        },
+                      )
+                  ),
+                  const SizedBox(
+                    height: 10.0,
+                  ),
+                  Row(
+                    children: <Widget>[
+                      Text(LanguageService.donthaveaccount),
+                      TextButton(
+                        child:  Text(
+                          LanguageService.signup,
+                          style: TextStyle(fontSize: 20),
+                        ),
+                        onPressed: () {
+                          Get.to(SignUp());
+                        },
+                      )
+                    ],
+                    mainAxisAlignment: MainAxisAlignment.center,
+                  ),
+
+                  const SizedBox(
+                    height: 10.0,
+                  ),
+                  _buildLanguage()
+                ],
+              ))),
+        )
+    );
+  }*/
 
   messageAllert(String msg, String ttl) {
     if(ttl!="Warning") {
@@ -867,7 +920,226 @@ class _LoginScreenState extends State<LoginScreen> {
     );
   }
 
+  Widget LoginPhone(bool isPhone)
+  {
+    return  Padding(padding: EdgeInsets.only(top: 0,bottom: 0),child: Container(
+      width: double.infinity,
+      decoration: BoxDecoration(
+          gradient: LinearGradient(
+              begin: Alignment.topCenter,
+              colors: [
+                Colors.orange.shade900,
+                Colors.orange.shade800,
+                Colors.orange.shade400
+              ]
+          )
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          const SizedBox(height: 20,),
+          Padding(
+            padding: const EdgeInsets.all(20),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
 
+                FadeInUp(duration: const Duration(milliseconds: 1000), child: Text("Login", style: TextStyle(color: Colors.white, fontSize: 40),)),
+                const SizedBox(height: 10,),
+                FadeInUp(duration: const Duration(milliseconds: 1300), child: const Text("Welcome Back", style: TextStyle(color: Colors.white, fontSize: 18),)),
+              ],
+            ),
+          ),
+          const SizedBox(height: 20),
+          Expanded(
+            child: Container(
+              decoration: const BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.only(topLeft: Radius.circular(60), topRight: Radius.circular(60))
+              ),
+              child: Padding(
+                padding: const EdgeInsets.all(20),
+                child: Column(
+                  children: <Widget>[
+                    const SizedBox(height: 10,),
+                    FadeInUp(duration: const Duration(milliseconds: 1400), child: Container(
+                      decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.circular(10),
+                          boxShadow: const [BoxShadow(
+                              color: Color.fromRGBO(225, 95, 27, .3),
+                              blurRadius: 20,
+                              offset: Offset(0, 10)
+                          )]
+                      ),
+                      child: Column(
+                        children: <Widget>[
+                          Container(
+                            padding: const EdgeInsets.all(10),
+                            child: TextField(
+
+                              controller: emailController,
+                              decoration:  InputDecoration(
+                                labelText: LanguageService.EMP_ID,
+                                focusedBorder: OutlineInputBorder(borderSide: BorderSide(color: Colors.orange,width: 2.0)),
+                                enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: Colors.blue,width: 2.0)),
+                              ),
+                              onChanged: ((String email) {
+                                setState(() {
+                                  _email=email;
+                                });
+                              }
+                              ),
+                            ),
+                          ),
+                          Container(
+                            padding: const EdgeInsets.fromLTRB(10, 10, 10, 0),
+                            child: TextField(
+                              obscureText: !_passwordVisible,
+                              controller: passwordController,
+                              decoration:  InputDecoration(
+                                suffixIcon: IconButton  (
+                                  icon: Icon(
+                                    _passwordVisible?Icons.visibility:Icons.visibility_off,color: Theme.of(context).primaryColorDark,
+                                  ),
+                                  onPressed: (){
+                                    setState(() {
+                                      _passwordVisible = !_passwordVisible;
+                                    });
+                                  },
+                                ),
+                                labelText: LanguageService.PAS_NO,
+                                focusedBorder: OutlineInputBorder(borderSide: BorderSide(color: Colors.orange,width: 2.0)),
+                                enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: Colors.blue,width: 2.0)),
+                              ),
+                              onChanged: ((String pass){
+                                setState(() {
+                                  _pass=pass;
+                                });
+                              }),
+                            ),
+                          ),
+                          const SizedBox(
+                            height: 10.0,
+                          ),
+                          TextButton(
+                            onPressed: () {
+                              Get.to(ForgotPassWord());
+                            },
+                            child:  Text(LanguageService.FOR_DR,),
+                          ),
+                          const SizedBox(
+                            height: 10.0,
+                          ),
+
+                          Container(
+                              height: 40,
+                            width: 120,
+                            //  padding: const EdgeInsets.fromLTRB(10, 0, 10, 0),
+                              child: OutlinedButton(
+                                style: OutlinedButton.styleFrom(
+                                  shape: const StadiumBorder(),
+                                  side: const BorderSide(width: 2, color: Colors.deepOrangeAccent),
+                                ),
+                                child:  Text(LanguageService.LOG_IN,),
+                                onPressed: () async {
+                                  if(_email!='' && _pass!='')
+                                  {
+                                    try
+                                    {
+                                      Utility.showLoaderDialog(context);
+                                      await filb01aController.Login(_email!, _pass!);
+                                      if (statusCodeController.statuscode.value == 200) {
+                                        if (filb01aController.items.isNotEmpty) {
+                                          SystemController systemController = Get.put(SystemController());
+                                          systemController.username.value =
+                                          filb01aController.items[0].EMP_ID!;
+                                          systemController.token.value = filb01aController.items[0].token!;
+                                          systemController.GROUP_ID.value = filb01aController.items[0].GROUP_ID!;
+                                          Filc01aController filc01aController = Get.put(
+                                              Filc01aController());
+                                          Fila15aController fila15aController = Get.put(
+                                              Fila15aController());
+                                          Filc03aController filc03aController = Get.put(
+                                              Filc03aController());
+                                          Filc06aController filc06aController = Get.put(
+                                              Filc06aController());
+                                          Filc06aaController filc06aaController = Get.put(
+                                              Filc06aaController());
+                                          Sys_NotificationController sys_notificationController = Get.put(
+                                              Sys_NotificationController());
+                                          Gp_sys_ShiftController gp_sys_shiftController = Get.put(
+                                              Gp_sys_ShiftController());
+
+                                          filc04aaController.fetchProducts(systemController.username.value,'','1');
+                                          Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(
+                                              builder: (BuildContext context) =>
+                                              filb01aController.items[0].iPrivilege == 4
+                                                  ? const PageHome()
+                                                  : MyHomePage()), (Route<dynamic> route) => false);
+                                        }
+                                      }
+                                    }finally
+                                    {
+                                      if (statusCodeController.statuscode.value != 200) {
+                                        Navigator.pop(context);
+                                        messageAllert(LanguageService.errorlogin, 'Warning');
+                                      }
+                                    }
+
+                                  }else
+                                  {
+                                    messageAllert('Bạn chưa nhập tên đăng nhập hoặc mật khẩu.','Warning');
+                                  }
+                                },
+                              )
+                          ),
+                          const SizedBox(
+                            height: 10.0,
+                          ),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: <Widget>[
+                              Text(LanguageService.donthaveaccount),
+                              TextButton(
+                                child:  Text(
+                                  LanguageService.signup,
+                                  style: TextStyle(fontSize: 20),
+                                ),
+                                onPressed: () {
+                                  Get.to(SignUp());
+                                },
+                              )
+                            ],
+                          ),
+
+                          const SizedBox(
+                            height: 20.0,
+                          ),
+                          _buildLanguage(),
+
+                          const SizedBox(
+                            height: 20.0,
+                          ),
+
+
+                        ],
+                      ),
+                    )),
+
+                  ],
+                ),
+              ),
+            ),
+          )
+        ],
+      ),
+    ),);
+  }
+  Widget formLogin(bool isDT)
+  {
+    return  LoginPhone(isDT);
+  }
 
 }
 

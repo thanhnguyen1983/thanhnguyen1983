@@ -15,7 +15,7 @@ const kHintTextStyle = TextStyle(
   color: Colors.white54,
   fontFamily: 'OpenSans',
 );
-
+const double spaceHeight=10.0;
 const kLabelStyle =  TextStyle(
   color: Colors.white,
   fontWeight: FontWeight.bold,

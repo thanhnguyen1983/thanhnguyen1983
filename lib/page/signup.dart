@@ -1,3 +1,4 @@
+import 'package:animate_do/animate_do.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -57,10 +58,15 @@ class _SignUpState extends State<SignUp>
         email.text=stateSystem.email.value;
         _email=stateSystem.email.value;
       }
+    double screenWidth = MediaQuery.of(context).size.width;
+    double screenHeight = MediaQuery.of(context).size.height;
+
+    //print('$screenWidth - $screenHeight');
+    bool isPhone=Utility.isMobile(screenWidth,screenHeight);
 
     return Scaffold(
       appBar: AppBar(
-        title:  Text(LanguageService.LOG_IN),
+        title:  Text(LanguageService.signup),
         leading:IconButton(onPressed: (){Get.back();},icon:const Icon(Icons.arrow_back_ios) ),
 
       ),
@@ -72,72 +78,14 @@ class _SignUpState extends State<SignUp>
           child:  Form(
             key: formKey,
 
-            child: Stack(
-              children: <Widget>[
-
-                //Positioned(bottom: 5,right: 5,child: _buildLanguage()),
-                Container(
-                  height: double.infinity,
-                  width: double.infinity,
-                  decoration: const BoxDecoration(
-                    gradient: LinearGradient(
-                      begin: Alignment.topCenter,
-                      end: Alignment.bottomCenter,
-                      colors: [
-                        Color(0xFFFFFFFF),
-                        Color(0xFFFFFFFF),
-                        Color(0xFFFFFFFF),
-                        Color(0xFFFFFFFF),
-                      ],
-                      stops: [0.1, 0.4, 0.7, 0.9],
-                    ),
-                  ),
+            child:isPhone? SignUpPhone():  Stack(children: [ Container(
+              decoration: const BoxDecoration(
+                image: DecorationImage(
+                  image: AssetImage('images/bg.jpg'), // Replace with the actual path to your image
+                  fit: BoxFit.cover,
                 ),
-                Container(
-                  height: double.infinity,
-                  child: SingleChildScrollView(
-                    physics: const AlwaysScrollableScrollPhysics(),
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: 40.0,
-                      vertical: 40.0,
-                    ),
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: <Widget>[
-                        Text( stateSystem.changePass.isFalse?
-                          LanguageService.signup:LanguageService.changepass,
-                          style: const TextStyle(
-                            color: Colors.blue,
-                            fontFamily: 'OpenSans',
-                            fontSize: 30.0,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                        const SizedBox(height: 5.0),
-                        _buildmsnvnew(),
-                        const SizedBox(
-                          height: 0.0,
-                        ),
-                        _buildemailnew(),
-                        const SizedBox(
-                          height: 0.0,
-                        ),
-                        _buildPasswordTFnew(),
-                        const SizedBox(
-                          height: 0.0,
-                        ),
-                        _buildPasswordTF1new(),
-                        const SizedBox(
-                          height: 15.0,
-                        ),
-                        _buildLoginBtn(),
-
-                      ],
-                    ),
-                  ),
-                )
-              ],
-            ),
+              ),
+            ),Padding(padding: EdgeInsets.all(isPhone?0:20.0),child: Center(child: Container(width: 500,height: 650,child: SignUpPhone(),),),)],),
           ),
         ),
       ),
@@ -188,17 +136,11 @@ class _SignUpState extends State<SignUp>
 
   Widget _buildmsnvnew() {
     return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: <Widget>[
-        Text(
-          LanguageService.EMP_ID,
-          style: kLabelStyle,
-        ),
-        const SizedBox(height: 10.0),
-        Container(
-          alignment: Alignment.centerLeft,
 
-          height: 60.0,
+      children: <Widget>[
+
+        Container(
+          padding: const EdgeInsets.all(spaceHeight),
           child:  TextFormField(
             //  initialValue:stateSystem.changePass.isFalse? '':stateSystem.username.value,
             controller: msnv,
@@ -270,17 +212,11 @@ class _SignUpState extends State<SignUp>
 
   Widget _buildemailnew() {
     return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
+
       children: <Widget>[
-        Text(
-          LanguageService.email,
-          style: kLabelStyle,
-        ),
-        const SizedBox(height: 10.0),
+
         Container(
-          alignment: Alignment.centerLeft,
-         // decoration: kBoxDecorationStyle,
-          height: 60.0,
+          padding: const EdgeInsets.all(spaceHeight),
           child:  TextFormField(
             //initialValue: stateSystem.changePass.isFalse?'':stateSystem.email.value,
             validator: (value) => value!=null && !EmailValidator.validate(value)? LanguageService.emailvalidate:null,
@@ -352,17 +288,11 @@ class _SignUpState extends State<SignUp>
 
   Widget _buildPasswordTFnew() {
     return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
+
       children: <Widget>[
-        Text(
-          LanguageService.PAS_NO,
-          style: kLabelStyle,
-        ),
-        const SizedBox(height: 10.0),
+
         Container(
-          alignment: Alignment.centerLeft,
-         // decoration: kBoxDecorationStyle,
-          height: 60.0,
+          padding: const EdgeInsets.all(spaceHeight),
           child:  TextFormField(
             validator: (value)=>  value!.length>=4 ? null :"do dai it nhat 4 ki tu",
             controller: pass1,
@@ -441,17 +371,11 @@ class _SignUpState extends State<SignUp>
 
   Widget _buildPasswordTF1new() {
     return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
+
       children: <Widget>[
-        Text(
-          LanguageService.passcomfirm,
-          style: kLabelStyle,
-        ),
-        const SizedBox(height: 10.0),
+
         Container(
-          alignment: Alignment.centerLeft,
-          //decoration: kBoxDecorationStyle,
-          height: 60.0,
+          padding: const EdgeInsets.all(spaceHeight),
           child:  TextFormField(
             validator: (value) => value!=null && _pass1==value ? null:LanguageService.passcomfirm,
             controller: pass2,
@@ -490,23 +414,17 @@ class _SignUpState extends State<SignUp>
 
   Widget _buildLoginBtn() {
     return Container(
-      height: 50,
+
+      height: 40,
+
       padding: const EdgeInsets.fromLTRB(10, 0, 10, 0),
-      width: double.infinity,
-      child: ElevatedButton(
-          style: ButtonStyle(
-              foregroundColor: MaterialStateProperty.all<Color>(Colors.white),
-              elevation: MaterialStateProperty.resolveWith<double>(
-                    (Set<MaterialState> states) {
-                  if (states.contains(MaterialState.pressed)
-                      ||  states.contains(MaterialState.disabled)) {
-                    return 0;
-                  }
-                  return 10;
-                },
-              )
-          )
-      ,
+      width: 120,
+      child: OutlinedButton(
+          style: OutlinedButton.styleFrom(
+            shape: const StadiumBorder(),
+            side: const BorderSide(width: 2, color: Colors.deepOrangeAccent),
+          ),
+
         onPressed: () async {
           final form = formKey.currentState!;
 
@@ -526,7 +444,7 @@ class _SignUpState extends State<SignUp>
                  }
              }finally{
                 Navigator.pop(context);
-                messageAllert(s,'Warning');
+                messageAllert(s,LanguageService.Notification);
              }
 
 
@@ -593,5 +511,92 @@ class _SignUpState extends State<SignUp>
             ],
           );
         });
+  }
+
+
+
+  Widget SignUpPhone()
+  {
+    return  Container(
+      width: double.infinity,
+      decoration: BoxDecoration(
+          gradient: LinearGradient(
+              begin: Alignment.topCenter,
+              colors: [
+                Colors.orange.shade900,
+                Colors.orange.shade800,
+                Colors.orange.shade400
+              ]
+          )
+      ),
+      child:  Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          const SizedBox(height: 10,),
+          Padding(
+            padding: const EdgeInsets.all(spaceHeight),
+            child:  Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+                FadeInUp(duration: const Duration(milliseconds: 1000), child:  Text( stateSystem.changePass.isFalse?
+                LanguageService.signup:LanguageService.changepass,
+                  style: const TextStyle(
+                    color: Colors.white,
+                    fontFamily: 'OpenSans',
+                    fontSize: 30.0,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),),
+
+              ],
+            ),
+          ),
+          const SizedBox(height: spaceHeight),
+          Expanded(
+            child: Container(
+              decoration: const BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.only(topLeft: Radius.circular(40), topRight: Radius.circular(40))
+              ),
+              child: Padding(
+                padding: const EdgeInsets.all(spaceHeight),
+                child: SingleChildScrollView(child: Column(
+                  children: <Widget>[
+                    const SizedBox(height: 10,),
+                    FadeInUp(duration: const Duration(milliseconds: 1000), child: Container(
+                      decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.circular(10),
+                          boxShadow: const [BoxShadow(
+                              color: Color.fromRGBO(225, 95, 27, .3),
+                              blurRadius: 20,
+                              offset: Offset(0, 10)
+                          )]
+                      ),
+                      child: Padding(padding: EdgeInsets.all(5),child: Column(
+                        children: <Widget>[
+
+                      FadeInUp(duration: const Duration(milliseconds: 1000),child: _buildmsnvnew()),
+
+                      FadeInUp(duration: const Duration(milliseconds: 1200),child:  _buildemailnew()),
+
+                      FadeInUp(duration: const Duration(milliseconds: 1600),child:   _buildPasswordTFnew()),
+
+                        FadeInUp(duration: const Duration(milliseconds: 1800),child:    _buildPasswordTF1new()),
+                          const SizedBox(height: 20,),
+                      FadeInUp(duration: const Duration(milliseconds: 2000),child:  _buildLoginBtn()),
+                         const SizedBox(height: 20,)
+                        ],
+                      ),),
+                    )),
+                 //   FadeInUp(duration: const Duration(milliseconds: 1400), child:_buildLoginBtn()),
+                  ],
+                ),),
+              ),
+            ),
+          )
+        ],
+      ),
+    );
   }
 }

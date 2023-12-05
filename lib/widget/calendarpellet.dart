@@ -108,8 +108,8 @@ class _CalendarPelletState extends State<CalendarPellet> {
         day='Sun';
         break;
     }
-    print(day!);
-    return day;
+    //print(day!);
+    return day!;
 
   }
 
